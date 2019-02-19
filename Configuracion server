@@ -16,7 +16,7 @@ Password: 2019sid0s
 
 Iniciar el servidor: asadmin start-domain domain1
 Detener el servidor: asadmin stop-domain domain1
-Servidor o consola de admin: http://10.X.Y.Z:4848 
+Servidor o consola de admin: http://10.3.1.1:4848 
 Habilitar administracion remota (opcional en principio): asadmin enable-secure-admin
 Acceso con ssl: https://10.X.Y.Z:8181
 
@@ -26,3 +26,13 @@ Aqui se instalan las apps por defecto: /opt/glassfish4/glassfish/domains/domain1
 
 /opt/glassfish4/glassfish/
 /opt/glassfish4/glassfish/
+
+6513 0633 4651 1154 | Gabriel Locke Martinez | 04/08       | 02/20       | 681
+
+cat /opt/glassfish-4.1.2/glassfish/domains/domain1/logs/server.log
+
+java -version tiene que dar 1.8
+
+ant replegar limpiar-todo unsetup-db todo
+
+
