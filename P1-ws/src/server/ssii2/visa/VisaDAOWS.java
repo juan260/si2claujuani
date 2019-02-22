@@ -10,7 +10,7 @@
  *
  */
 
-package ssii2.visa.daows;
+package ssii2.visa.dao;
 import ssii2.visa.*;
 
 import java.sql.Connection;
@@ -136,8 +136,7 @@ public class VisaDAOWS extends DBTester {
      * @return true si la comprobacion contra las tarjetas contenidas en
      *         en la tabla TARJETA fue satisfactoria, false en caso contrario     */
     @WebMethod(operationName = "compruebaTarjeta")
-    @WebParam(name = "tarjeta")
-    public boolean compruebaTarjeta(TarjetaBean tarjeta) {
+    public boolean compruebaTarjeta(@WebParam(name = "tarjeta")TarjetaBean tarjeta) {
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -211,8 +210,7 @@ public class VisaDAOWS extends DBTester {
      * @return
      */
     @WebMethod(operationName = "realizaPago")
-    @WebParam(name = "pago")
-    public synchronized PagoBean realizaPago(PagoBean pago) {
+    public synchronized PagoBean realizaPago(@WebParam(name = "pago")PagoBean pago) {
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -455,8 +453,7 @@ public class VisaDAOWS extends DBTester {
     }
 
     @WebMethod(operationName = "setPrepared")
-    @WebParam(name = "prepared")
-    public void setPrepared(boolean prepared) {
+    public void setPrepared(@WebParam(name = "prepared")boolean prepared) {
         this.prepared = prepared;
     }
     /********************************************************/
@@ -481,19 +478,19 @@ public class VisaDAOWS extends DBTester {
      * @param debug the debug to set
      */
     @WebMethod(operationName = "setDebug")
-    @WebParam(name = "debug")
-    public void setDebug(String debug) {
+    public void setDebug(@WebParam(name = "debug")String debug) {
         this.debug = (debug.equals("true"));
     }
 
     @WebMethod(operationName = "isDirectConnection")
+    @Override
     public boolean isDirectConnection() {
       super();
     }
 
     @WebMethod(operationName = "setDirectConnection")
-    @WebParam(name = "directConnection")
-    public void setDirectConnection(boolean directConnection) {
+    @Override
+    public void setDirectConnection(@WebParam(name = "directConnection")boolean directConnection) {
       super();
     }
 
