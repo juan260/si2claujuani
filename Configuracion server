@@ -1,7 +1,7 @@
 CONFIGURACION INICIAL:
 
 Descargar archivos de moodle y descomprimirlos
-IMPORTANTE: export J2EE_HOME=/opt/glassfish4/glassfish 
+IMPORTANTE: export J2EE_HOME=/opt/glassfish4/glassfish
 ./si2fixMAC.sh 2401 3 1
 Abrir vmware
 User: si2
@@ -16,7 +16,7 @@ Password: 2019sid0s
 
 Iniciar el servidor: asadmin start-domain domain1
 Detener el servidor: asadmin stop-domain domain1
-Servidor o consola de admin: http://10.3.1.1:4848 
+Servidor o consola de admin: http://10.1.3.1:4848 
 Habilitar administracion remota (opcional en principio): asadmin enable-secure-admin
 Acceso con ssl: https://10.X.Y.Z:8181
 
@@ -34,5 +34,3 @@ cat /opt/glassfish-4.1.2/glassfish/domains/domain1/logs/server.log
 java -version tiene que dar 1.8
 
 ant replegar limpiar-todo unsetup-db todo
-
-

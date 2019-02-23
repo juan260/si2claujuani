@@ -24,6 +24,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import java.util.Arrays;
+
 
 /**
  * @author jaime
@@ -398,7 +400,7 @@ public class VisaDAOWS extends DBTester {
      * @param idComercio
      * @return numero de registros afectados
      */
-    @WebParam(name="delPagos")
+    @WebMethod(operationName = "delPagos")
     public int delPagos(@WebParam(name="idComercio")String idComercio) {
 
         PreparedStatement pstmt = null;
