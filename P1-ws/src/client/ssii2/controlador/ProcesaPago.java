@@ -44,8 +44,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import ssii2.visa.*;
-import ssii2.visa.dao.VisaDAO;
-
+import javax.xml.ws.WebServiceRef;
+import javax.xml.ws.BindingProvider;
 /**
  *
  * @author phaya
@@ -136,11 +136,21 @@ private void printAddresses(HttpServletRequest request, HttpServletResponse resp
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-                 
+
         TarjetaBean tarjeta = creaTarjeta(request);            
         ValidadorTarjeta val = new ValidadorTarjeta();                        
         PagoBean pago = null; 
-        
+        VisaDAOWS dao = null;
+        try{
+            VisaDAOWSService service = new VisaDAOWSService();
+            dao = service.getVisaDAOWSPort ();
+            BindingProvider bp = (BindingProvider) dao;
+            bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+                getServletContext().getInitParameter("serverAddress"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         // printAddresses(request,response);
         if (! val.esValida(tarjeta)) {            
             request.setAttribute(val.getErrorName(), val.getErrorVisa());
@@ -148,7 +158,7 @@ private void printAddresses(HttpServletRequest request, HttpServletResponse resp
             return;
         }
 
-		VisaDAO dao = new VisaDAO();
+		
 		HttpSession sesion = request.getSession(false);
 		if (sesion != null) {
 			pago = (PagoBean) sesion.getAttribute(ComienzaPago.ATTR_PAGO);
@@ -156,7 +166,7 @@ private void printAddresses(HttpServletRequest request, HttpServletResponse resp
 		if (pago == null) {
 			pago = creaPago(request);
 			boolean isdebug = Boolean.valueOf(request.getParameter("debug"));
-			dao.setDebug(isdebug);
+			dao.setDebug(String.valueOf(isdebug));
 			boolean isdirectConnection = Boolean.valueOf(request.getParameter("directConnection"));
 			dao.setDirectConnection(isdirectConnection);
 			boolean usePrepared = Boolean.valueOf(request.getParameter("usePrepared"));	
@@ -170,8 +180,16 @@ private void printAddresses(HttpServletRequest request, HttpServletResponse resp
             enviaError(new Exception("Tarjeta no autorizada:"), request, response);
             return;
         }
+        PagoBean respuestaPago=null;
+    try {
+        respuestaPago=dao.realizaPago(pago);
+    }
+    catch (Exception e){
+        e.printStackTrace();
+    }
 
-	if (! dao.realizaPago(pago)) {      
+    if (respuestaPago==null || 
+            respuestaPago.getCodRespuesta()=="999") {      
             enviaError(new Exception("Pago incorrecto"), request, response);
             return;
         }
