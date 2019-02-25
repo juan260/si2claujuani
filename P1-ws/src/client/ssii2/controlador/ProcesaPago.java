@@ -148,7 +148,7 @@ private void printAddresses(HttpServletRequest request, HttpServletResponse resp
             bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
                 getServletContext().getInitParameter("serverAddress"));
         }
-        catch (Exception e){
+        catch (javax.xml.ws.WebServiceException e){
             e.printStackTrace();
         }
         // printAddresses(request,response);
@@ -180,16 +180,16 @@ private void printAddresses(HttpServletRequest request, HttpServletResponse resp
             enviaError(new Exception("Tarjeta no autorizada:"), request, response);
             return;
         }
-        PagoBean respuestaPago=null;
+        //PagoBean respuestaPago=null;
     try {
-        respuestaPago=dao.realizaPago(pago);
+        pago=dao.realizaPago(pago);
     }
-    catch (Exception e){
+    catch (javax.xml.ws.WebServiceException e){
         e.printStackTrace();
     }
 
-    if (respuestaPago==null || 
-            respuestaPago.getCodRespuesta()=="999") {      
+    if (pago==null || 
+            pago.getCodRespuesta()=="999") {      
             enviaError(new Exception("Pago incorrecto"), request, response);
             return;
         }
