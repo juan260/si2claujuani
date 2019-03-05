@@ -169,7 +169,7 @@ private VisaDAOLocal dao;
         }
         
 		if (pago == null) {
-            log += "Pago es null";
+           log += "Pago es null";
             pago = creaPago(request);
             enviaLog("Creado pago");
 			boolean isdebug = Boolean.valueOf(request.getParameter("debug"));
