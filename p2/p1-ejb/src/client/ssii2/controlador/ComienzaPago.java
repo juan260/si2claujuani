@@ -80,7 +80,7 @@ public class ComienzaPago extends ServletRaiz {
             accesoNoAutorizado(request, response);
             return;
         }
-
+        
         request.getSession(true).setAttribute(ATTR_PAGO, pago);
         reenvia("/formdatosvisa.jsp", request, response);
         return;
