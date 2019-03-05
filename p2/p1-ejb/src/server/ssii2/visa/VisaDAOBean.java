@@ -130,8 +130,7 @@ import java.util.Arrays;
      * @param tarjeta Objeto con toda la informacion de la tarjeta
      * @return true si la comprobacion contra las tarjetas contenidas en
      *         en la tabla TARJETA fue satisfactoria, false en caso contrario     */
-    @WebMethod(operationName = "compruebaTarjeta")
-    public boolean compruebaTarjeta(@WebParam(name = "tarjeta")TarjetaBean tarjeta) {
+    public boolean compruebaTarjeta(TarjetaBean tarjeta) {
         
         Connection con = null;
         Statement stmt = null;
@@ -205,8 +204,7 @@ import java.util.Arrays;
      * @param pago
      * @return
      */
-    @WebMethod(operationName = "realizaPago")
-    public synchronized PagoBean realizaPago(@WebParam(name = "pago")PagoBean pago) {
+    public synchronized PagoBean realizaPago(PagoBean pago) {
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -328,8 +326,7 @@ import java.util.Arrays;
      * @param idComercio
      * @return
      */
-    @WebMethod(operationName = "getPagos")
-    public PagoBean[] getPagos(@WebParam(name = "idComercio")String idComercio) {
+    public PagoBean[] getPagos(String idComercio) {
 
         PreparedStatement pstmt = null;
         Connection pcon = null;
@@ -403,8 +400,7 @@ import java.util.Arrays;
      * @param idComercio
      * @return numero de registros afectados
      */
-    @WebMethod(operationName = "delPagos")
-    public int delPagos(@WebParam(name="idComercio")String idComercio) {
+    public int delPagos(String idComercio) {
 
         PreparedStatement pstmt = null;
         Connection pcon = null;
@@ -450,13 +446,13 @@ import java.util.Arrays;
         return ret;
     }
 
-    @WebMethod(operationName = "isPrepared")
+    
     public boolean isPrepared() {
         return prepared;
     }
 
-    @WebMethod(operationName = "setPrepared")
-    public void setPrepared(@WebParam(name = "prepared")boolean prepared) {
+    
+    public void setPrepared(boolean prepared) {
         this.prepared = prepared;
     }
     /********************************************************/
@@ -464,7 +460,6 @@ import java.util.Arrays;
     /**
      * @return the debug
      */
-    @WebMethod(operationName = "isDebug")
     public boolean isDebug() {
         return debug;
     }
@@ -472,30 +467,26 @@ import java.util.Arrays;
     /**
      * @param debug the debug to set
      */
-    @WebMethod(exclude = true)
-    //@WebMethod(operationName = "setDebug")
-    public void setDebug(@WebParam(name = "debug")boolean debug) {
+    public void setDebug(boolean debug) {
         this.debug = debug;
     }
 
     /**
      * @param debug the debug to set
      */
-    @WebMethod(operationName = "setDebug")
-    //@WebMethod(exclude = true)
-    public void setDebug(@WebParam(name = "debug")String debug) {
+    public void setDebug(String debug) {
         this.debug = (debug.equals("true"));
     }
 
-    @WebMethod(operationName = "isDirectConnection")
+    
     @Override
     public boolean isDirectConnection() {
         return super.isDirectConnection();
     }
 
-    @WebMethod(operationName = "setDirectConnection")
+    
     @Override
-    public void setDirectConnection(@WebParam(name = "directConnection")boolean directConnection) {
+    public void setDirectConnection(boolean directConnection) {
         super.setDirectConnection(directConnection);
     }
 
