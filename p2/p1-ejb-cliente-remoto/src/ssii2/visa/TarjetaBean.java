@@ -6,7 +6,9 @@
  */
 package ssii2.visa;
 
-public class TarjetaBean {
+import java.io.Serializable;
+
+public class TarjetaBean implements Serializable {
     
     private String numero;
     private String titular;

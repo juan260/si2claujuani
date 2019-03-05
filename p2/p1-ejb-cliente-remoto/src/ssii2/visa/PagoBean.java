@@ -7,11 +7,9 @@
 
 package ssii2.visa;
 
-/**
- *
- * @author jaime
- */
-public class PagoBean {
+import java.io.Serializable;
+
+public class PagoBean implements Serializable {
     
 	private String idTransaccion; 
 	private String idComercio;  
