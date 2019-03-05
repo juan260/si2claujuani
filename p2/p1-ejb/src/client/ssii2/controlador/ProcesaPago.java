@@ -143,7 +143,7 @@ private VisaDAOLocal dao;
         TarjetaBean tarjeta = creaTarjeta(request);
         ValidadorTarjeta val = new ValidadorTarjeta();
         PagoBean pago = null;
-
+        String log = "";
         /*try{
             VisaDAOWSService service = new VisaDAOWSService();
             dao = service.getVisaDAOWSPort ();
@@ -165,10 +165,11 @@ private VisaDAOLocal dao;
 		HttpSession sesion = request.getSession(false);
 		if (sesion != null) {
             pago = (PagoBean) sesion.getAttribute(ComienzaPago.ATTR_PAGO);
+            log+="Hay sesion. ";
         }
         
 		if (pago == null) {
-            enviaLog("PAgo es null");
+           log += "Pago es null";
             pago = creaPago(request);
             enviaLog("Creado pago");
 			boolean isdebug = Boolean.valueOf(request.getParameter("debug"));
@@ -184,6 +185,7 @@ private VisaDAOLocal dao;
 
         // Almacenamos la tarjeta en el pago
         pago.setTarjeta(tarjeta);
+
         if(dao==null){
             enviaError(new Exception("Tarjeta no autorizada (DAO NULL): "), request, response);
             return;
@@ -193,6 +195,7 @@ private VisaDAOLocal dao;
             enviaError(new Exception("Tarjeta no autorizada:"), request, response);
             return;
         }
+        log+="Tarjeta comprobada. ";
         //PagoBean respuestaPago=null;
     try {
         pago=dao.realizaPago(pago);
@@ -202,7 +205,7 @@ private VisaDAOLocal dao;
     }
 
     if (pago==null ){
-        enviaError(new Exception("Pago incorrecto1"), request, response);
+        enviaError(new Exception("Pago incorrecto1. LOG:   " + log), request, response);
             return;
     }
     if(pago.getCodRespuesta()=="999") {
