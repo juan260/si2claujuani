@@ -22,7 +22,7 @@ public class PagoBean {
         
         /* Calculados por el gestor de medios de pago */
         private String codRespuesta;    
-        private String idAutorizacion;  
+        private String idAutorizacion; 
 
     /**
      * @return el ID de transacci&oacute;n

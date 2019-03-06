@@ -24,7 +24,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.ejb.EJBException;
-
 import java.util.Arrays;
 
 
@@ -225,8 +224,10 @@ import java.util.Arrays;
         // Calcular pago.
         // Comprobar id.transaccion - si no existe,
         // es que la tarjeta no fue comprobada
+        pago.setCodRespuesta(codRespuesta);
         if (pago.getIdTransaccion() == null) {
             errorLog("El pago no tiene id de transaccion");
+            pago.setCodRespuesta("998");
             return null;
         }
 
@@ -245,27 +246,28 @@ import java.util.Arrays;
             pstmt = con.prepareStatement(saldos);
             pstmt.setString(1, pago.getTarjeta().getNumero());
             rs = pstmt.executeQuery();
-            Double saldo = rs.getDouble("saldo");
+            Double saldo = 0.0;
+            if(rs.next()) {
+                saldo = rs.getDouble("saldo");
+                pstmt.close();
+            } else {
+                pago.setIdAutorizacion(null);
+                pstmt.close();
+                pago.setCodRespuesta("997");
+                return pago;
+            }
             if (saldo<pago.getImporte()){
                 pago.setIdAutorizacion(null);
                 pstmt.close();
-                return null;
-            }  else {
+                pago.setCodRespuesta("997");
+                return pago;
+            } 
                 
-                String insertSaldo  = UPDATE_SALDO_QRY;
-                errorLog(insertSaldo);
-                pstmt = con.prepareStatement(insertSaldo);
-                pstmt.setDouble(1, saldo-pago.getImporte());
-                pstmt.setString(2, pago.getTarjeta().getNumero());
-                if(pstmt.execute() || pstmt.getUpdateCount() != 1){
-                    pstmt.close();
-                    pago.setIdAutorizacion(null);
-                    return null;
-                }
-                pstmt.close();
-                pago.setImporte(0);
+               
+                //pago.setImporte(0);
 
-            }
+            
+            pago.setCodRespuesta("995");
             if (isPrepared() == true) {
                 String insert  = INSERT_PAGOS_QRY;
                 errorLog(insert);
@@ -274,10 +276,13 @@ import java.util.Arrays;
                 pstmt.setDouble(2, pago.getImporte());
                 pstmt.setString(3, pago.getIdComercio());
                 pstmt.setString(4, pago.getTarjeta().getNumero());
-                ret = null;
+
+                
+                //ret = null;
                 if (!pstmt.execute()
                         && pstmt.getUpdateCount() == 1) {
-                ret = pago;
+                    pago.setCodRespuesta("995");
+                    ret = pago;
                 }
 
             } else {
@@ -285,13 +290,14 @@ import java.util.Arrays;
             stmt = con.createStatement();
             String insert = getQryInsertPago(pago);
             errorLog(insert);
-            ret = null;
+            //ret = null;
             if (!stmt.execute(insert)
                     && stmt.getUpdateCount() == 1) {
+                    pago.setCodRespuesta("994");
                 ret = pago;
 			}
             }/****************/
-
+            pago.setCodRespuesta("993");
             // Obtener id.autorizacion
             if (ret!=null) {
 
@@ -327,11 +333,24 @@ import java.util.Arrays;
                     throw new EJBException("No se ha podido setear el idAutorizacion o codRepsuesta");
                 }
 
+                String insertSaldo  = UPDATE_SALDO_QRY;
+                errorLog(insertSaldo);
+                pstmt = con.prepareStatement(insertSaldo);
+                pstmt.setDouble(1, saldo-pago.getImporte());
+                pstmt.setString(2, pago.getTarjeta().getNumero());
+                if(pstmt.execute() || pstmt.getUpdateCount() != 1){
+                    pstmt.close();
+                    pago.setIdAutorizacion(null);
+                    pago.setCodRespuesta("996");
+                    return pago;
+                }
+                pstmt.close();
+
             }
 
         } catch (Exception e) {
             errorLog(e.toString());
-            ret = null;
+            ret = pago;
         } finally {
             try {
                 if (rs != null) {

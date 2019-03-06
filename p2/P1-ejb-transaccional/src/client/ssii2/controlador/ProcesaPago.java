@@ -169,7 +169,7 @@ private VisaDAOLocal dao;
         }
         
 		if (pago == null) {
-           log += "Pago es null";
+            log += "Pago es null";
             pago = creaPago(request);
             enviaLog("Creado pago");
 			boolean isdebug = Boolean.valueOf(request.getParameter("debug"));
@@ -205,11 +205,15 @@ private VisaDAOLocal dao;
     }
 
     if (pago==null ){
-        enviaError(new Exception("Pago incorrecto1. LOG:   " + log), request, response);
+        enviaError(new Exception("Pago incorrecto. LOG:   " + log), request, response);
             return;
     }
-    if(pago.getCodRespuesta()=="999") {
-        enviaError(new Exception("Pago incorrecto2"), request, response);
+    if (pago.getIdTransaccion()==null ){
+        enviaError(new Exception("Pago incorrecto. LOG:   " + log), request, response);
+            return;
+    }
+    if(Integer.parseInt(pago.getCodRespuesta())>900) {
+        enviaError(new Exception("Pago incorrecto "+pago.getCodRespuesta()), request, response);
         return;
         }
 
