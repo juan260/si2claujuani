@@ -29,14 +29,49 @@ public class VisaCancelacionJMSBean extends DBTester implements MessageListener 
   @Resource
   private MessageDrivenContext mdc;
 
-  private static final String UPDATE_CANCELA_QRY = null;
-   // TODO : Definir UPDATE sobre la tabla pagos para poner
-   // codRespuesta a 999 dado un código de autorización
-
+  private static final String UPDATE_CANCELA_QRY = "UPDATE pago " + 
+    "set codrespuesta = \"999\" where idautorizacion = ?; " + 
+    "update tarjeta set saldo = saldo + pago.importe from pago " + 
+    "where pago.numerotarjeta=tarjeta.numerotarjeta and idautorizacion=?;";
 
   public VisaCancelacionJMSBean() {
+    
   }
-
+  
+  public void cancelarPago(int id) {
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+    Connection con=null;
+    try {
+        con = getConnection();
+        pstmt = con.prepareStatement(UPDATE_CANCELA_QRY);
+        pstmt.setInt(1, id);
+        pstmt.setInt(2, id);
+        rs = pstmt.executeQuery();
+        if (!rs.next()){
+            logger.warning("The cancelation query did not work correctly");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        logger.warning(e.toString());
+    } finally {
+        try {
+            if (rs != null) {
+                rs.close(); rs = null;
+            }
+            if (pstmt != null) {
+                pstmt.close(); pstmt = null;
+            }
+            if (con != null) {
+                closeConnection(con); 
+                con = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.warning(e.toString());
+        }
+    }
+  }
   // TODO : Método onMessage de ejemplo
   // Modificarlo para ejecutar el UPDATE definido más arriba,
   // asignando el idAutorizacion a lo recibido por el mensaje
@@ -49,6 +84,7 @@ public class VisaCancelacionJMSBean extends DBTester implements MessageListener 
           if (inMessage instanceof TextMessage) {
               msg = (TextMessage) inMessage;
               logger.info("MESSAGE BEAN: Message received: " + msg.getText());
+              cancelarPago(Integer.valueOf(msg.toString()));
           } else {
               logger.warning(
                       "Message of wrong type: "
