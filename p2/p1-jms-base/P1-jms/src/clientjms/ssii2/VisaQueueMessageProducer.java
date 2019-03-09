@@ -82,6 +82,7 @@ public class VisaQueueMessageProducer {
             messageProducer = session.createProducer(queue);
             message = session.createTextMessage();
             message.setText(args[0]);
+            System.out.println("Enviando el siguiente mensaje: "+ message.getText());
             messageProducer.send(message);
             messageProducer.close();
             session.close();
