@@ -79,12 +79,11 @@ public class VisaCancelacionJMSBean extends DBTester implements MessageListener 
   // la actualización
   public void onMessage(Message inMessage) {
       TextMessage msg = null;
-
       try {
           if (inMessage instanceof TextMessage) {
               msg = (TextMessage) inMessage;
               logger.info("MESSAGE BEAN: Message received: " + msg.getText());
-              cancelarPago(Integer.valueOf(msg.toString()));
+              cancelarPago(Integer.valueOf(msg.getText()));
           } else {
               logger.warning(
                       "Message of wrong type: "
