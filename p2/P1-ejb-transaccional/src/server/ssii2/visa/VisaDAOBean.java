@@ -31,7 +31,7 @@ import java.util.Arrays;
  * @author jaime
  */
  @Stateless(mappedName="VisaDAOBean")
- public class VisaDAOBean extends DBTester implements VisaDAOLocal {
+ public class VisaDAOBean extends DBTester implements VisaDAOLocal, VisaDAORemote {
 
     private boolean debug = false;
 
@@ -57,8 +57,8 @@ import java.util.Arrays;
         "select saldo from tarjeta " +
         "where numeroTarjeta=? ";
 
-    private static final String UPDATE_SALDO_QRY = 
-        "update tarjeta set saldo=? " + 
+    private static final String UPDATE_SALDO_QRY =
+        "update tarjeta set saldo=? " +
         "where numeroTarjeta=?";
     /**
      * TODO: Declarar consultas SQL estaticas
@@ -138,7 +138,7 @@ import java.util.Arrays;
      * @return true si la comprobacion contra las tarjetas contenidas en
      *         en la tabla TARJETA fue satisfactoria, false en caso contrario     */
     public boolean compruebaTarjeta(TarjetaBean tarjeta) {
-        
+
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -261,12 +261,12 @@ import java.util.Arrays;
                 pstmt.close();
                 pago.setCodRespuesta("997");
                 return pago;
-            } 
-                
-               
+            }
+
+
                 //pago.setImporte(0);
 
-            
+
             pago.setCodRespuesta("995");
             if (isPrepared() == true) {
                 String insert  = INSERT_PAGOS_QRY;
@@ -277,7 +277,7 @@ import java.util.Arrays;
                 pstmt.setString(3, pago.getIdComercio());
                 pstmt.setString(4, pago.getTarjeta().getNumero());
 
-                
+
                 //ret = null;
                 if (!pstmt.execute()
                         && pstmt.getUpdateCount() == 1) {
@@ -313,11 +313,11 @@ import java.util.Arrays;
                     rs = pstmt.executeQuery();
                 } else {
                 /**************************************************/
-                    
+
                         String select = getQryBuscaPagoTransaccion(pago);
                         errorLog(select);
                         rs = stmt.executeQuery(select);
-                    
+
                 }/*************************************/
                 if (rs.next()) {
                     String idAut=null;
@@ -499,12 +499,12 @@ import java.util.Arrays;
         return ret;
     }
 
-    
+
     public boolean isPrepared() {
         return prepared;
     }
 
-    
+
     public void setPrepared(boolean prepared) {
         this.prepared = prepared;
     }
@@ -531,13 +531,13 @@ import java.util.Arrays;
         this.debug = (debug.equals("true"));
     }
 
-    
+
     @Override
     public boolean isDirectConnection() {
         return super.isDirectConnection();
     }
 
-    
+
     @Override
     public void setDirectConnection(boolean directConnection) {
         super.setDirectConnection(directConnection);
