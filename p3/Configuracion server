@@ -34,3 +34,11 @@ cat /opt/glassfish-4.1.2/glassfish/domains/domain1/logs/server.log
 java -version tiene que dar 1.8
 
 ant replegar limpiar-todo unsetup-db todo
+
+si algo no funciona y es raro todo (para la vida):
+  export LANG=C
+  export LC_ALL=C
+  
+jmeter en los labs: #/usr/local/...
+
+
