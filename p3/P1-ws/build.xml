@@ -51,6 +51,11 @@ ant limpiar-todo
         <antcall target="cliente" />
     </target>
 
+    <target name="replegar">
+        <antcall target="replegar-cliente" />
+        <antcall target="replegar-servicio" />
+    </target>
+
     <target name="casitodo">
         <antcall target="servicio" />
         <antcall target="cliente" />
