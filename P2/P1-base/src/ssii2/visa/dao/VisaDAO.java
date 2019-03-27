@@ -1,6 +1,6 @@
 /**
  * Pr&aacute;ctricas de Sistemas Inform&aacute;ticos II
- * 
+ *
  * Implementacion de la interfaz de VISA utilizando como backend
  * una base de datos.
  * Implementa dos modos de acceso (proporcionados por la clase DBTester):
@@ -73,9 +73,9 @@ public class VisaDAO extends DBTester {
                     " and idComercio = ?";
     /**************************************************/
 
-    
+
     /**
-     * Constructor de la clase     
+     * Constructor de la clase
      */
     public VisaDAO() {
         return;
@@ -94,7 +94,7 @@ public class VisaDAO extends DBTester {
                     + "' and codigoVerificacion='" + tarjeta.getCodigoVerificacion() + "'";
         return qry;
     }
-    
+
     /**
      *  getQryInsertPago
      */
@@ -159,7 +159,7 @@ public class VisaDAO extends DBTester {
                pstmt.setString(3, tarjeta.getFechaEmision());
                pstmt.setString(4, tarjeta.getFechaCaducidad());
                pstmt.setString(5, tarjeta.getCodigoVerificacion());
-               rs = pstmt.executeQuery();               
+               rs = pstmt.executeQuery();
 
             } else {
             /**************************************************/
@@ -169,7 +169,7 @@ public class VisaDAO extends DBTester {
             rs = stmt.executeQuery(qry);
 
             } /**********************/
-            
+
             /* Si hay siguiente registro, la tarjeta valido OK */
             ret = rs.next();
 
@@ -191,6 +191,7 @@ public class VisaDAO extends DBTester {
                     closeConnection(con); con = null;
                 }
             } catch (SQLException e) {
+               errorLog(e.toString());
             }
         }
 
@@ -199,7 +200,7 @@ public class VisaDAO extends DBTester {
     }
 
     /**
-     * Realiza el pago 
+     * Realiza el pago
      * @param pago
      * @return
      */
@@ -245,7 +246,7 @@ public class VisaDAO extends DBTester {
                  ret = true;
                }
 
-            } else {            
+            } else {
             /**************************************************/
             stmt = con.createStatement();
             String insert = getQryInsertPago(pago);
@@ -258,7 +259,7 @@ public class VisaDAO extends DBTester {
             }/****************/
 
             // Obtener id.autorizacion
-            if (ret) {                
+            if (ret) {
 
                 /* TODO Permitir usar prepared statement si
                  * isPrepared() = true */
@@ -276,7 +277,7 @@ public class VisaDAO extends DBTester {
                     String select = getQryBuscaPagoTransaccion(pago);
                     errorLog(select);
                     rs = stmt.executeQuery(select);
-                    
+
                 }/*************************************/
                 if (rs.next()) {
                     pago.setIdAutorizacion(String.valueOf(rs.getInt("idAutorizacion")));
