@@ -41,4 +41,6 @@ si algo no funciona y es raro todo (para la vida):
 
 jmeter en los labs: #/usr/local/...
 
+sudo service postgresql-8.4 stop
+
 ~/apache-jmeter-5.1/bin/jmeter.sh &
