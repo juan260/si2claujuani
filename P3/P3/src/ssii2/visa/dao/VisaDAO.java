@@ -164,7 +164,6 @@ public class VisaDAO extends DBTester {
                pstmt.setString(4, tarjeta.getFechaCaducidad());
                pstmt.setString(5, tarjeta.getCodigoVerificacion());
                rs = pstmt.executeQuery();               
-
             } else {
             /**************************************************/
             stmt = con.createStatement();
@@ -243,6 +242,8 @@ public class VisaDAO extends DBTester {
                pstmt.setDouble(2, pago.getImporte());
                pstmt.setString(3, pago.getIdComercio());
                pstmt.setString(4, pago.getTarjeta().getNumero());
+	       pstmt.setString(5, pago.getInstancia());
+	       pstmt.setString(6, pago.getIp());
                ret = false;
                if (!pstmt.execute()
                        && pstmt.getUpdateCount() == 1) {

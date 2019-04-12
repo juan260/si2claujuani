@@ -20,12 +20,20 @@ Servidor o consola de admin: http://10.1.3.1:4848
 Habilitar administracion remota (opcional en principio): asadmin enable-secure-admin
 Acceso con ssl: https://10.X.Y.Z:8181
 
+export AS_ADMIN_USER=admin
+export AS_ADMIN_PASSWORDFILE=/opt/SI2/passwordfile
+
 /opt/glassfish4/glassfish/
 domains/domain1/docroot/index.html
 Aqui se instalan las apps por defecto: /opt/glassfish4/glassfish/domains/domain1/applications/j2ee-modules
 
+PRACTICA 3
 /opt/glassfish4/glassfish/
 /opt/glassfish4/glassfish/
+asadmin stop-cluster SI2Cluster
+asadmin start-cluster SI2Cluster
+
+1111 2222 3333 4444 | Jose Garcia      | 11/09       | 11/20       | 123
 
 6513 0633 4651 1154 | Gabriel Locke Martinez | 04/08       | 02/20       | 681
 
@@ -47,6 +55,6 @@ sudo service postgresql-8.4 stop
 
 java –jar NMONVisualizer_2019-01-06.jar
 
-export PATH=/opt/glassfish4/glassfish/bin:$PATH 
+export PATH=/opt/glassfish4/glassfish/bin:$PATH
 
 vmstat -n 1 | (trap '' INT;  awk '{print; if(NR>2) cpu+=$13+$14;}END{print"MEDIA"; print "NR: ",NR,"CPU: ", cpu/(NR-2);}';)
